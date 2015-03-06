@@ -21,7 +21,7 @@ import org.jfree.util.PublicCloneable;
  */
 public class GUI extends JFrame
 {
-    private static final String VERSAO = "0.1";
+    private static final String VERSAO = "0.2";
     //Altura e largura da GUI Frame
     private static final int HEIGHT=200;
     private static final int WIDTH=500;

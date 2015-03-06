@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class MainExec
 {
     private final static String PROG = "qqsm.jar";
-    private final static String LINK = "https://dl.dropboxusercontent.com/u/100283103/qqsmilionario.jar";
+    private final static String LINK = "https://dl.dropboxusercontent.com/u/100283103/qqsmilionario/qqsm.jar";
     private final static String SHA1_LINK = "https://raw.githubusercontent.com/alexandre1985/QQSMilionario/master/updater/SHA1.txt";
     
     public static void main(String args[]) throws Exception
@@ -63,7 +63,7 @@ public class MainExec
     
     public static void showSha1() throws Exception
     {
-        System.out.println(sha1(PROG));
+        System.out.println(sha1("C:\\Users\\Daniel\\Dropbox\\Public\\qqsmilionario\\qqsm.jar"));
     }
     
     private static boolean sameSha1() throws Exception

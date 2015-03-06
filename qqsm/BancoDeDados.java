@@ -444,7 +444,7 @@ public class BancoDeDados
         questoes.setPergunta(12, "A escala de Saffir-Simpson mede a intensidade de...");
         questoes.setResposta(new String[]{"Terramotos","Tsunamis","Furacões","Relâmpagos"});
         questoes.setRespostaCorrecta(3);
-        questoes.setPergunta(1, "Que se dá ao local onde desagua um rio?");
+        questoes.setPergunta(1, "Que nome se dá ao local onde desagua um rio?");
         questoes.setResposta(new String[]{"Margem","Leito","Nascente","Foz"});
         questoes.setRespostaCorrecta(4);
         questoes.setPergunta(2, "Em que ilha dos Açores fica situada a cidade de Ponta Delgada?");
