@@ -63,7 +63,7 @@ public class MainExec
     
     public static void showSha1() throws Exception
     {
-        System.out.println(sha1("C:\\Users\\Daniel\\Dropbox\\Public\\qqsmilionario\\qqsm.jar"));
+        System.out.println(sha1("qqsm.jar"));
     }
     
     private static boolean sameSha1() throws Exception
