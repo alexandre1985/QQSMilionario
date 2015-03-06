@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.net.URL;
 import org.apache.commons.io.FileUtils;
+import java.nio.file.*;
 
 /**
  * Write a description of class MainExec here.
@@ -19,11 +20,17 @@ public class MainExec
     
     public static void main(String args[]) throws Exception
     {
-        FileUtils.copyURLToFile(new URL(SHA1_LINK), new File("SHA1.txt"));
-        if(!sameSha1()) {
-            System.out.println("sha diferentes");
-            FileUtils.copyURLToFile(new URL(LINK), new File(PROG));
+        try {
+            FileUtils.copyURLToFile(new URL(SHA1_LINK), new File("SHA1.txt"));
+            if(!sameSha1()) {
+                System.out.println("sha diferentes");
+                FileUtils.copyURLToFile(new URL(LINK), new File(PROG));
+            }
+        } catch (Exception e) {
+            System.out.println("Internet is off");
         }
+        //delete SHA1 file
+        Files.deleteIfExists(Paths.get("SHA1.txt"));
         //runCommand();
     }
     
@@ -59,14 +66,13 @@ public class MainExec
     
     private static boolean sameSha1() throws Exception
     {
-        String sha1Txt = new Scanner(new File("SHA1.txt")).useDelimiter("\\Z").next();
+        Scanner s = new Scanner(new File("SHA1.txt"));
+        String sha1Txt = s.useDelimiter("\\Z").next();
+        
         String sha1File = sha1(PROG);
         
+        s.close();
+        
         return sha1File.equals(sha1Txt);
-    }
-    
-    private static void downloadFile() throws Exception
-    {
-        FileUtils.copyURLToFile(new URL(LINK), new File(PROG));
     }
 }
