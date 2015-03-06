@@ -5,16 +5,17 @@ import java.util.Scanner;
 import java.net.URL;
 import org.apache.commons.io.FileUtils;
 import java.nio.file.*;
+import javax.swing.JOptionPane;
 
 /**
- * Write a description of class MainExec here.
+ * Classe principal do updater.
  * 
  * @author Daniel Santos
  * @version 0.2
  */
 public class MainExec
 {
-    private final static String PROG = "qqsmilionario.jar";
+    private final static String PROG = "qqsm.jar";
     private final static String LINK = "https://dl.dropboxusercontent.com/u/100283103/qqsmilionario.jar";
     private final static String SHA1_LINK = "https://raw.githubusercontent.com/alexandre1985/QQSMilionario/master/updater/SHA1.txt";
     
@@ -23,15 +24,16 @@ public class MainExec
         try {
             FileUtils.copyURLToFile(new URL(SHA1_LINK), new File("SHA1.txt"));
             if(!sameSha1()) {
-                System.out.println("sha diferentes");
+                JOptionPane.showMessageDialog(null, "Existe uma nova versão do jogo.\n" + 
+                "O download vai começar depois desta mensagem.\nAguarde um pouco", "Nova versão", JOptionPane.INFORMATION_MESSAGE);
                 FileUtils.copyURLToFile(new URL(LINK), new File(PROG));
             }
         } catch (Exception e) {
-            System.out.println("Internet is off");
+            System.out.println("Internet está desligada");
         }
         //delete SHA1 file
         Files.deleteIfExists(Paths.get("SHA1.txt"));
-        //runCommand();
+        runCommand();
     }
     
     private static void runCommand()
