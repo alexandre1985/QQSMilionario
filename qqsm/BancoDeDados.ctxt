@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=
+comment0.target=BancoDeDados()
+comment1.params=
+comment1.target=void\ iniciaAsPerguntasERespostas()
+comment2.params=
+comment2.target=Questoes\ get()
+comment3.params=
+comment3.target=void\ stats()
+comment4.params=
+comment4.target=java.lang.String\ haRepetidos()
+comment5.params=string
+comment5.target=java.lang.String\ removeAccents(java.lang.String)
+numComments=6

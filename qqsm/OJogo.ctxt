@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.params=
+comment0.target=OJogo()
+comment1.params=
+comment1.target=java.lang.String\ getPergunta()
+comment2.params=
+comment2.target=java.lang.String[]\ getRespostas()
+comment3.params=
+comment3.target=int\ getRespostaCorrecta()
+comment4.params=
+comment4.target=int\ getNivel()
+comment5.params=
+comment5.target=void\ incrementaNivel()
+comment6.params=
+comment6.target=boolean\ eNivelPatamar()
+comment7.params=
+comment7.target=int[]\ ajuda5050()
+comment7.text=\r\n\ Indica\ quais\ as\ respostas\ a\ apagar.\ Vai\ desde\ 1\ at\u00E9\ 4.\r\n
+comment8.params=
+comment8.target=boolean\ acabou()
+numComments=9

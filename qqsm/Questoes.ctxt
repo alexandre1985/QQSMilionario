@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Questoes()
+comment1.params=nivel
+comment1.target=java.lang.String\ getPergunta(int)
+comment2.params=nivel\ pergunta
+comment2.target=void\ setPergunta(int,\ java.lang.String)
+comment2.text=\r\n\ Define\ a\ pergunta\ consoante\ o\ nivel.\r\n\ @param\ nivel\ \u00E9\ o\ n\u00EDvel\ (etapa)\ do\ jogo\ a\ que\ a\ pergunta\ pertence\r\n
+comment3.params=quatroRespostas
+comment3.target=void\ setResposta(java.lang.String[])
+comment4.params=
+comment4.target=java.lang.String[]\ getResposta()
+comment5.params=numeroDaResposta
+comment5.target=void\ setRespostaCorrecta(int)
+comment5.text=\r\n\ Define\ qual\ \u00E9\ a\ resposta\ correcta\r\n\ @param\ numeroDaResposta\ \u00E9\ o\ n\u00FAmero\ da\ resposta\ correcta\ e\ vai\ desde\ 1\ at\u00E9\ 4\r\n
+comment6.params=
+comment6.target=int\ getRespostaCorrecta()
+comment7.params=nivel
+comment7.target=int\ getSize(int)
+comment7.text=\r\n\ Retorna\ o\ numero\ de\ perguntas\ de\ um\ n\u00EDvel\r\n
+comment8.params=nivel\ numero
+comment8.target=java.lang.String\ getPergunta(int,\ int)
+comment8.text=\r\n\ Retorna\ a\ pergunta\ segundo\ o\ nivel\ e\ o\ numero\ da\ pergunta\r\n\ @param\ nivel\ Nivel\ do\ jogo\ (1\ a\ 15)\r\n\ @param\ numero\ N\u00BA\ da\ pergunta\ (de\ 0\ a\ ...)\r\n
+numComments=9

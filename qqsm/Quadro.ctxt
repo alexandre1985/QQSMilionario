@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Quadro()
+comment0.text=\r\n\ Cria\ o\ quadro\ das\ etapas.\r\n\ \r\n
+comment1.params=
+comment1.target=void\ makeFrame()
+comment2.params=nivel
+comment2.target=void\ mudaNivel(int)
+comment2.text=\r\n\ P\u00F5e\ a\ negrito\ a\ etapa\ correspondente\ ao\ n\u00EDvel\r\n\ @param\ nivel\ Nivel\ da\ etapa\ (vai\ de\ 1\ a\ 15)\r\n
+numComments=3
