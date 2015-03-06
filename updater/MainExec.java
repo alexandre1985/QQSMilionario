@@ -15,7 +15,7 @@ public class MainExec
 {
     private final static String PROG = "qqsmilionario.jar";
     private final static String LINK = "https://dl.dropboxusercontent.com/u/100283103/qqsmilionario.jar";
-    private final static String SHA1_LINK = "";
+    private final static String SHA1_LINK = "https://raw.githubusercontent.com/alexandre1985/QQSMilionario/master/updater/SHA1.txt";
     
     public static void main(String args[]) throws Exception
     {
