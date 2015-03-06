@@ -63,7 +63,11 @@ public class MainExec
     
     public static void showSha1() throws Exception
     {
+<<<<<<< HEAD
         System.out.println(sha1(PROG));
+=======
+        System.out.println(sha1("qqsm.jar"));
+>>>>>>> 5bf30df57c50e0bf1e40fe649d6128a938d0d6bd
     }
     
     private static boolean sameSha1() throws Exception
