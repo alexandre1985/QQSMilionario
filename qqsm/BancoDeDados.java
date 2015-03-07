@@ -507,9 +507,9 @@ public class BancoDeDados
         questoes.setPergunta(1, "Que atleta português venceu a prova de Maratona nos Jogos Olímpicos de Los Angeles em 1984?");
         questoes.setResposta(new String[]{"António Leitão","Carlos Lopes","Rui Silva","Fernando Mamede"});
         questoes.setRespostaCorrecta(2);
-        //questoes.setPergunta(12, "Sicília é uma ilha de que país?");
-        //questoes.setResposta(new String[]{"Itália","Malásia","Filipinas","Austrália"});
-        //questoes.setRespostaCorrecta(1);
+        questoes.setPergunta(9, "Qual a última sinfonia completa composta por Ludwig van Beethoven?");
+        questoes.setResposta(new String[]{"Sinfonia nº 10","Sinfonia nº 9","Sinfonia nº 13","Sinfonia nº 11"});
+        questoes.setRespostaCorrecta(2);
     }
     
     public Questoes get() { return questoes; }
