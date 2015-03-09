@@ -2,10 +2,10 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
-import java.net.URL;
+import java.net.*;
 import org.apache.commons.io.FileUtils;
 import java.nio.file.*;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
  * Classe principal do updater.
@@ -30,9 +30,10 @@ public class MainExec
             File file = new File(PROG);
             if(!file.exists() || !sameSha1(sha1Url)) {
                 JOptionPane.showMessageDialog(null, "Existe uma nova versão do jogo.\n" + 
-                "O download vai começar depois desta mensagem.\nAguarde um pouco",
+                "O download vai começar depois desta mensagem.",
                 "Nova versão", JOptionPane.INFORMATION_MESSAGE);
-                FileUtils.copyURLToFile(new URL(LINK), new File(PROG));
+                downloadFile();
+                //FileUtils.copyURLToFile(new URL(LINK), new File(PROG));
             }
         } catch (Exception e) {
             System.out.println("Internet está desligada");
@@ -85,5 +86,48 @@ public class MainExec
     {
         String sha1File = sha1(PROG);
         return sha1File.equals(sha1Url);
+    }
+    
+    private static void downloadFile()
+    {
+        try {
+            // Open the URLConnection for reading
+            URL u = new URL(LINK);
+            URLConnection uc = u.openConnection();
+            InputStream in = uc.getInputStream();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+    
+            // Chain a ProgressMonitorInputStream to the 
+            // URLConnection's InputStream
+            ProgressMonitorInputStream pin 
+             = new ProgressMonitorInputStream(null, u.toString(), in);
+             
+            // Set the maximum value of the ProgressMonitor
+            ProgressMonitor pm = pin.getProgressMonitor(); 
+            pm.setMaximum(uc.getContentLength());
+
+            byte[] buf = new byte[1024];
+            int c;
+            while ((c = pin.read(buf)) != -1) {
+              out.write(buf, 0, c);
+            }
+            pin.close();
+            out.close();
+            
+            byte[] response = out.toByteArray();
+ 
+            FileOutputStream fos = new FileOutputStream(PROG);
+        	fos.write(response);
+        	fos.close();
+        }
+        catch (MalformedURLException e) {
+            System.err.println(LINK + " is not a parseable URL");
+        }
+        catch (InterruptedIOException e) {
+            // User cancelled. Do nothing.
+        } 
+        catch (IOException e) {
+            System.err.println(e);
+        }
     }
 }

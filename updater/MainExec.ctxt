@@ -9,4 +9,6 @@ comment3.params=
 comment3.target=void\ createFileSha1()
 comment4.params=sha1Url
 comment4.target=boolean\ sameSha1(java.lang.String)
-numComments=5
+comment5.params=
+comment5.target=void\ downloadFile()
+numComments=6
