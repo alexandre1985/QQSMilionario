@@ -79,7 +79,7 @@ public class OJogo
         String ultimo = null;
         int numLinhas=0;
         while(s.hasNext()) {
-            ultimo = s.next();
+            ultimo = s.nextLine();
             numLinhas++;
         }
         s.close();
@@ -149,7 +149,7 @@ public class OJogo
         Scanner s = new Scanner(new File(ficRecordes));
         String linha = null;
         while(s.hasNext()) {
-            linha = s.next();
+            linha = s.nextLine();
             String palavra[] = linha.split(" ",2);
             map.put(Integer.parseInt(palavra[0]), palavra[1]);
         }
