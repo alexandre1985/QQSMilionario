@@ -1,5 +1,4 @@
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.net.URL;
 import org.apache.commons.net.ftp.FTPClient;
 import java.io.*;
@@ -72,16 +71,24 @@ public class OJogo
         return false;
     }
     
-    public boolean eRecorde() throws Exception
+    public boolean eRecorde(int nivel) throws Exception
     {
         openFTPSession();
         downloadRecordes();
         Scanner s = new Scanner(new File(ficRecordes));
         String ultimo = null;
+        int numLinhas=0;
         while(s.hasNext()) {
             ultimo = s.next();
+            numLinhas++;
         }
-        
+        s.close();
+        if(numLinhas < 10)
+            return true;
+        String palavra[] = ultimo.split(" ",2);
+        int ultimoNivel = Integer.parseInt(palavra[0]);
+        if(nivel >= ultimoNivel)
+            return true;
         return false;
     }
     
@@ -135,11 +142,31 @@ public class OJogo
         }
     }
     
+    public void guardarRecorde(int nivel, String nick) throws Exception
+    {
+        Map<Integer, String> map = new TreeMap<Integer, String>(Collections.reverseOrder());
+        
+        Scanner s = new Scanner(new File(ficRecordes));
+        String linha = null;
+        while(s.hasNext()) {
+            linha = s.next();
+            String palavra[] = linha.split(" ",2);
+            map.put(Integer.parseInt(palavra[0]), palavra[1]);
+        }
+        map.put(new Integer(nivel), nick);
+        s.close();
+        int i=0;
+        for(Map.Entry<Integer,String> entry : map.entrySet()) {
+            if(i<10)
+                System.out.println(entry.getKey() + " " + entry.getValue());
+            i++;
+        }
+    }
+    
     public void deleteRecordes() throws Exception
     {
         openFTPSession();
         client.deleteFile(ficRecordes);
-        client.logout();
-        client.disconnect();
+        closeFTPSession();
     }
 }
