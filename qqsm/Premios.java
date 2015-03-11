@@ -35,29 +35,11 @@ public class Premios
      */
     public String getPremio(int nivel)
     {
+        if(nivel == 0)
+            return premiosString(0);
         if(nivel >= 1 && nivel <= 15)
         {
             return premiosString(premios[nivel-1]);
-        }
-        return null; //caso o nivel seja fora do intervalo
-    }
-    
-    /**
-     * Escolhe este método se o concorrente errou na pergunta.
-     * Devolve o correspondente prémio em euros consoante o nível.
-     * @param nivel é o nível, vai de 1 a 15
-     */
-    public String getPremioEtapa(int nivel)
-    {
-        if(nivel >= 1 && nivel <= 15)
-        {
-            if(nivel <= 5) {
-                return premiosString(0);
-            } else if(nivel <= 10) {
-                return premiosString(premios[4]);
-            } else if(nivel <= 15) {
-                return premiosString(premios[9]);
-            }
         }
         return null; //caso o nivel seja fora do intervalo
     }

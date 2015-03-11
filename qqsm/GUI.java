@@ -21,7 +21,7 @@ import org.jfree.util.PublicCloneable;
  */
 public class GUI extends JFrame
 {
-    private static final String VERSAO = "0.2";
+    private static final String VERSAO = "0.3";
     //Altura e largura da GUI Frame
     private static final int HEIGHT=200;
     private static final int WIDTH=500;
@@ -174,7 +174,8 @@ public class GUI extends JFrame
     
     private void respostaErrada()
     {
-        String euros = premios.getPremioEtapa(dados.getNivel());
+        int nivel = dados.getNivelEtapa();
+        String euros = premios.getPremio(nivel);
         String mensagem;
         if(euros.equals("0 €")) {
             mensagem = "Não ganhaste dinheiro.";
@@ -185,6 +186,12 @@ public class GUI extends JFrame
         JOptionPane.showMessageDialog(this,
                         "A resposta está errada...\n" + mensagem, "Resposta Errada",
                         JOptionPane.PLAIN_MESSAGE);
+        if(nivel != 0) {
+            if(dados.eRecorde()) {
+                dialogGravarRecorde(nivel);
+            }
+        }
+        dialogMostrarRecordes();
         System.exit(0);
     }
     
@@ -195,6 +202,8 @@ public class GUI extends JFrame
                 "Acabaste o jogo! Muitos Parabéns!\nGanhaste " +
                 premios.getPremio(dados.getNivel()) + ".", "Parabéns",
                 JOptionPane.PLAIN_MESSAGE);
+            dialogGravarRecorde(dados.getNivel());
+            dialogMostrarRecordes();
             System.exit(0);
         }
         
@@ -234,10 +243,14 @@ public class GUI extends JFrame
     private void desisto()
     {
         if(dados.getNivel() != 1) {
-        JOptionPane.showMessageDialog(this,
-                    "Parabéns!\nGanhaste " + premios.getPremio(dados.getNivel()-1) + ".\nAdeus!",
-                    "Sair",
-                    JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                        "Parabéns!\nGanhaste " + premios.getPremio(dados.getNivel()-1) + ".",
+                        "Sair",
+                        JOptionPane.PLAIN_MESSAGE);
+            if(dados.eRecorde()) {
+                dialogGravarRecorde(dados.getNivel()-1);
+            }
+            dialogMostrarRecordes();
         }
         System.exit(0);
     }
@@ -361,7 +374,7 @@ public class GUI extends JFrame
     }
     
     /**
-     * Devolve a numero de uma resposta errada (vai de 0 a 3)
+     * Devolve um numero de uma resposta errada (vai de 0 a 3)
      */
     private int umaRespostaErrada()
     {
@@ -370,5 +383,19 @@ public class GUI extends JFrame
             a = rand.nextInt(4);
         } while(a == dados.getRespostaCorrecta()-1);
         return a;
+    }
+    
+    private void dialogMostrarRecordes()
+    {
+        JOptionPane.showMessageDialog(this, dados.recordesString(), "Recordes",
+                JOptionPane.PLAIN_MESSAGE);
+    }
+    
+    private void dialogGravarRecorde(int nivel)
+    {
+        String name = JOptionPane.showInputDialog("Bateste um recorde!\nEscreve o teu nick/nome " +
+        "para ir para a tabela de recordes: ");
+        if(name != null)
+            dados.guardarRecorde(nivel, name);
     }
 }

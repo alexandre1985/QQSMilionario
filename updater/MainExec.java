@@ -3,7 +3,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.net.*;
-import org.apache.commons.io.FileUtils;
 import java.nio.file.*;
 import javax.swing.*;
 
@@ -32,8 +31,8 @@ public class MainExec
                 JOptionPane.showMessageDialog(null, "Existe uma nova versão do jogo.\n" + 
                 "O download vai começar depois desta mensagem.",
                 "Nova versão", JOptionPane.INFORMATION_MESSAGE);
+                Files.deleteIfExists(Paths.get(PROG));
                 downloadFile();
-                //FileUtils.copyURLToFile(new URL(LINK), new File(PROG));
             }
         } catch (Exception e) {
             System.out.println("Internet está desligada");
@@ -79,7 +78,9 @@ public class MainExec
     {
         String directory = System.getProperty("user.home")+File.separatorChar+"Dropbox"+
         File.separatorChar+"Public"+File.separatorChar+"qqsmilionario"+File.separatorChar;
-        FileUtils.writeStringToFile(new File(directory + "SHA1.txt"), sha1(directory + "qqsm.jar"));
+        PrintWriter writer = new PrintWriter(directory + "SHA1.txt", "UTF-8");
+        writer.println(sha1(directory + "qqsm.jar"));
+        writer.close();
     }
     
     private static boolean sameSha1(String sha1Url) throws Exception

@@ -2,6 +2,7 @@ import java.util.*;
 import java.net.URL;
 import org.apache.commons.net.ftp.FTPClient;
 import java.io.*;
+import java.nio.file.*;
 
 /**
  * Esta classe trata do nível e define todos métodos principais do jogo.
@@ -20,6 +21,7 @@ public class OJogo
     public OJogo()
     {
         questoes = new BancoDeDados();
+        client = new FTPClient();
     }
     
     public String getPergunta()
@@ -44,6 +46,17 @@ public class OJogo
         if(nivel%5 == 0)
             return true;
         return false;
+    }
+    
+    public int getNivelEtapa()
+    {
+        if(nivel <= 5)
+            return 0;
+        else if(nivel <= 10)
+            return 5;
+        else if(nivel <= 15)
+            return 10;
+        return -1;
     }
     
     /**
@@ -71,11 +84,17 @@ public class OJogo
         return false;
     }
     
-    public boolean eRecorde(int nivel) throws Exception
+    public boolean eRecorde()
     {
         openFTPSession();
         downloadRecordes();
-        Scanner s = new Scanner(new File(ficRecordes));
+        Scanner s = null;
+        try {
+            s = new Scanner(new File(ficRecordes));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         String ultimo = null;
         int numLinhas=0;
         while(s.hasNext()) {
@@ -92,10 +111,9 @@ public class OJogo
         return false;
     }
     
-    public void openFTPSession()
+    private void openFTPSession()
     {
         try {
-            client = new FTPClient();
             client.connect(ftpURL);
             client.login("b7_15960406", "qqsmilionario");
             client.changeWorkingDirectory("htdocs");
@@ -104,7 +122,7 @@ public class OJogo
         }
     }
     
-    public void closeFTPSession()
+    private void closeFTPSession()
     {
         try {
             client.logout();
@@ -114,19 +132,22 @@ public class OJogo
         }
     }
     
-    public void downloadRecordes() throws Exception
+    private void downloadRecordes()
     {
-        FileOutputStream fos = new FileOutputStream(ficRecordes);
-        client.retrieveFile(ficRecordes, fos);
-        fos.close();
+        try {
+            FileOutputStream fos = new FileOutputStream(ficRecordes);
+            client.retrieveFile(ficRecordes, fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
-    public void uploadRecordes()
+    private void uploadRecordes()
     {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(ficRecordes);
-            
             // Store file to server
             client.storeFile(ficRecordes, fis);
         } catch (IOException e) {
@@ -142,31 +163,96 @@ public class OJogo
         }
     }
     
-    public void guardarRecorde(int nivel, String nick) throws Exception
+    /**
+     * Este metodo guarda o ficheiro dos recordes no servidor.
+     */
+    public void guardarRecorde(int nivel, String nick)
     {
-        Map<Integer, String> map = new TreeMap<Integer, String>(Collections.reverseOrder());
-        
-        Scanner s = new Scanner(new File(ficRecordes));
+        final String recordesTMP = "recordes_tmp.txt";
+        File recordes = new File(ficRecordes);
+        if(!client.isConnected())
+            openFTPSession();
+        if(!recordes.exists()) { //se o fic não existe, faz o download do fic
+            downloadRecordes();
+        }
+        Scanner s = null;
+        PrintWriter writer = null;
         String linha = null;
+        try {
+            s = new Scanner(recordes);
+            writer = new PrintWriter(recordesTMP, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int numLinha = 0;
+        boolean jaEscrevi = false;
         while(s.hasNext()) {
+            numLinha++;
             linha = s.nextLine();
-            String palavra[] = linha.split(" ",2);
-            map.put(Integer.parseInt(palavra[0]), palavra[1]);
+            if(numLinha < 10) {
+                String palavra[] = linha.split(" ",2);
+                if(Integer.parseInt(palavra[0]) <= nivel && !jaEscrevi) {
+                    writer.println(nivel + " " + nick);
+                    jaEscrevi = true;
+                }
+                writer.println(linha);
+            }
         }
-        map.put(new Integer(nivel), nick);
         s.close();
-        int i=0;
-        for(Map.Entry<Integer,String> entry : map.entrySet()) {
-            if(i<10)
-                System.out.println(entry.getKey() + " " + entry.getValue());
-            i++;
+        //se o ficheiro estiver vazio ou nao tenha escrito no fic
+        if(!jaEscrevi) {
+            writer.println(nivel + " " + nick);
         }
+        writer.close();
+        //rename o recordes_tmp.txt para recordes.txt
+        try {
+            Files.deleteIfExists(Paths.get(ficRecordes));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        File tmp = new File(recordesTMP);
+        tmp.renameTo(new File(ficRecordes));
+        if(!client.isConnected())
+            openFTPSession();
+        uploadRecordes();
+        closeFTPSession();
     }
     
-    public void deleteRecordes() throws Exception
+    public void apagarRecordesServidor() throws Exception
     {
         openFTPSession();
         client.deleteFile(ficRecordes);
         closeFTPSession();
+    }
+    
+    public String recordesString()
+    {
+        Premios premios = new Premios();
+        File recordes = new File(ficRecordes);
+        if(!recordes.exists()) { //se o fic não existe, faz o download do fic
+            if(!client.isConnected())
+                openFTPSession();
+            downloadRecordes();
+        }
+        Scanner s = null;
+        try {
+            s = new Scanner(recordes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String string = "";
+        String linha = null;
+        for(int i = 1; s.hasNext(); i++) {
+            linha = s.nextLine();
+            String palavra[] = linha.split(" ",2);
+            string += i+"º) "+palavra[1] +"  "+ premios.getPremio(Integer.parseInt(palavra[0]))+"\n";
+        }
+        s.close();
+        try {
+            Files.deleteIfExists(Paths.get(ficRecordes));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return string;
     }
 }
