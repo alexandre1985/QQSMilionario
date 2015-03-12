@@ -17,11 +17,11 @@ import org.jfree.util.PublicCloneable;
  * Esta é a GUI do jogo Quem Quer Ser Milionário.
  * 
  * @author Daniel Santos
- * @version 0.1
+ * @version 1.0
  */
 public class GUI extends JFrame
 {
-    private static final String VERSAO = "0.3";
+    private static final String VERSAO = "1.0";
     //Altura e largura da GUI Frame
     private static final int HEIGHT=200;
     private static final int WIDTH=500;
@@ -257,9 +257,8 @@ public class GUI extends JFrame
     
     private void sobre()
     {
-        JOptionPane.showMessageDialog(this,
-                    "Quem Quer Ser Milionário, versão " + VERSAO + "\nAutor:\nDaniel Santos",
-                    "Sobre", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Quem Quer Ser Milionário, versão " + VERSAO +
+        "\nAutor:\nDaniel Santos", "Sobre", JOptionPane.INFORMATION_MESSAGE);
     }
     
     public static int getAltura()
@@ -396,8 +395,12 @@ public class GUI extends JFrame
     
     private void dialogGravarRecorde(int nivel)
     {
-        String name = JOptionPane.showInputDialog("Bateste um recorde!\nEscreve o teu nick/nome " +
+        String name;
+        do {
+            name = JOptionPane.showInputDialog("Bateste um recorde!\nEscreve o teu nick/nome " +
         "para ir para a tabela de recordes: ");
+        } while(name != null && name.equals(""));
+        
         if(name != null) {
             dialogUploadWaiting(nivel, name);
         }
