@@ -87,6 +87,9 @@ public class OJogo
     public boolean eRecorde()
     {
         openFTPSession();
+        //se não houver internet
+        if(!client.isConnected())
+            return false;
         downloadRecordes();
         Scanner s = null;
         try {
@@ -172,6 +175,9 @@ public class OJogo
         File recordes = new File(ficRecordes);
         if(!client.isConnected())
             openFTPSession();
+        //se não há internet
+        if(!client.isConnected())
+            return;
         if(!recordes.exists()) { //se o fic não existe, faz o download do fic
             downloadRecordes();
         }

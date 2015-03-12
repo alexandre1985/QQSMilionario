@@ -510,6 +510,31 @@ public class BancoDeDados
         questoes.setPergunta(9, "Qual a última sinfonia completa composta por Ludwig van Beethoven?");
         questoes.setResposta(new String[]{"Sinfonia nº 10","Sinfonia nº 9","Sinfonia nº 13","Sinfonia nº 11"});
         questoes.setRespostaCorrecta(2);
+        questoes.setPergunta(5, "Qual é o fruto mais consumido no mundo?");
+        questoes.setResposta(new String[]{"Pêra","Laranja","Maçã","Manga"});
+        questoes.setRespostaCorrecta(4);
+        questoes.setPergunta(13, "Qual a cidade mais antiga da América do Sul?");
+        questoes.setResposta(new String[]{"Machu Picchu","Teyuna","Chan Chan","Caral"});
+        questoes.setRespostaCorrecta(4);
+        questoes.setPergunta(15, "Quem, em 1884, inventou o sabonete?");
+        questoes.setResposta(new String[]{"Augustin Fresnel","William Hesketh Lever","Thomas Clifford Albutt","Antonio Meucci"});
+        questoes.setRespostaCorrecta(2);
+        questoes.setPergunta(13, "Quem criou a teoria atômica no século XIX?");
+        questoes.setResposta(new String[]{"Carl Friedrich Gauss","Robert Koch","John Dalton","Auguste Comte"});
+        questoes.setRespostaCorrecta(3);
+        questoes.setPergunta(14, "Quem inventou, em 1888, o gira-discos?");
+        questoes.setResposta(new String[]{"Emile Berliner","Augustin Fresnet","Alexander Graham Bell","William Morton"});
+        questoes.setRespostaCorrecta(1);
+        questoes.setPergunta(12, "Quem descobriu a primeira enzima, lipase pancreática, em 1848?");
+        questoes.setResposta(new String[]{"Thomas Clifford Allbutt","Thomas Seebeck","Claude Bernard","Friedrich Wöhler"});
+        questoes.setRespostaCorrecta(3);
+        questoes.setPergunta(14, "Quem descobriu os raios x em 1895?");
+        questoes.setResposta(new String[]{"Wilhelm Conrad Röntgen","Henri Becquerel","Marie Curie","Friedrich Wöhler"});
+        questoes.setRespostaCorrecta(1);
+        questoes.setPergunta(13, "Quem, em 23 de junho de 1894, criou o Comitê Olímpico Internacional?");
+        questoes.setResposta(new String[]{"Solomon Andrews","Augustin Fresnel","Pierre de Fredi","Henri Becquerel"});
+        questoes.setRespostaCorrecta(3);
+
     }
     
     public Questoes get() { return questoes; }

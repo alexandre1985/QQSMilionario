@@ -387,11 +387,14 @@ public class GUI extends JFrame
     
     private void dialogMostrarRecordes()
     {
-        JOptionPane.showMessageDialog(this, dados.recordesString(), "Recordes",
-                JOptionPane.PLAIN_MESSAGE);
+        String pontuacoes = dados.recordesString();
+        //se tem internet
+        if(!pontuacoes.equals(""))
+            JOptionPane.showMessageDialog(this, dados.recordesString(), "Recordes",
+                    JOptionPane.PLAIN_MESSAGE);
     }
     
-    public void dialogGravarRecorde(int nivel)
+    private void dialogGravarRecorde(int nivel)
     {
         String name = JOptionPane.showInputDialog("Bateste um recorde!\nEscreve o teu nick/nome " +
         "para ir para a tabela de recordes: ");
@@ -424,8 +427,7 @@ public class GUI extends JFrame
         dialogDeEspera.setSize(300, dialogDeEspera.getHeight());
         dialogDeEspera.setLocationRelativeTo(null);
         dialogDeEspera.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        dialogDeEspera.setAlwaysOnTop(true);
-        dialogDeEspera.setVisible(true);
+        dialogDeEspera.setAlwaysOnTop(true);     
         msgLabel.setBackground(panel.getBackground());
         
         SwingWorker worker = new SwingWorker() {
@@ -447,10 +449,6 @@ public class GUI extends JFrame
         };
 
         worker.execute();
-        try {
-            worker.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        dialogDeEspera.setVisible(true);
     }
 }
