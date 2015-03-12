@@ -391,11 +391,66 @@ public class GUI extends JFrame
                 JOptionPane.PLAIN_MESSAGE);
     }
     
-    private void dialogGravarRecorde(int nivel)
+    public void dialogGravarRecorde(int nivel)
     {
         String name = JOptionPane.showInputDialog("Bateste um recorde!\nEscreve o teu nick/nome " +
         "para ir para a tabela de recordes: ");
-        if(name != null)
-            dados.guardarRecorde(nivel, name);
+        if(name != null) {
+            dialogUploadWaiting(nivel, name);
+        }
+    }
+    
+    private void dialogUploadWaiting(int nivel, String name)
+    {
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        JTextArea msgLabel;
+        JDialog dialogDeEspera;
+        JPanel panel;
+
+        msgLabel = new JTextArea("A gravar o recorde no servidor...");
+        msgLabel.setEditable(false);
+
+
+        panel = new JPanel(new BorderLayout(5, 5));
+        panel.add(msgLabel, BorderLayout.PAGE_START);
+        panel.add(progressBar, BorderLayout.CENTER);
+        panel.setBorder(BorderFactory.createEmptyBorder(11, 11, 11, 11));
+
+        dialogDeEspera = new JDialog(Frame.getFrames()[0], "A fazer o upload", true);
+        dialogDeEspera.getContentPane().add(panel);
+        dialogDeEspera.setResizable(false);
+        dialogDeEspera.pack();
+        dialogDeEspera.setSize(300, dialogDeEspera.getHeight());
+        dialogDeEspera.setLocationRelativeTo(null);
+        dialogDeEspera.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialogDeEspera.setAlwaysOnTop(true);
+        dialogDeEspera.setVisible(true);
+        msgLabel.setBackground(panel.getBackground());
+        
+        SwingWorker worker = new SwingWorker() {
+
+            @Override
+            protected void done() {
+                // Close the dialog
+                dialogDeEspera.dispose();
+            }
+
+            @Override
+            protected Void doInBackground() {
+                // Do the long running task here
+                // Call "publish()" to pass the data to "process()"
+                // return something meaningful
+                dados.guardarRecorde(nivel, name);
+                return null;
+            }
+        };
+
+        worker.execute();
+        try {
+            worker.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
