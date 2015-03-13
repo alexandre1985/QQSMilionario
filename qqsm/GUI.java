@@ -5,6 +5,7 @@ import javax.swing.border.*;
 //import java.awt.event.*;
 //import javax.swing.event.*;
 import java.util.Random;
+import java.util.concurrent.*;
 
 import org.jfree.chart.*;
 import org.jfree.chart.plot.*;
@@ -174,6 +175,7 @@ public class GUI extends JFrame
     
     private void respostaErrada()
     {
+        efeitoRespostaErrada();
         int nivel = dados.getNivelEtapa();
         String euros = premios.getPremio(nivel);
         String mensagem;
@@ -453,5 +455,28 @@ public class GUI extends JFrame
 
         worker.execute();
         dialogDeEspera.setVisible(true);
+    }
+    
+    private void efeitoRespostaErrada()
+    {
+        int resposta = dados.getRespostaCorrecta();
+        botão[resposta-1].setOpaque(true);
+        //botão[resposta-1].setBackground(Color.YELLOW);
+        Timer blinkTimer = new Timer(500, new ActionListener() {
+            private int count = 0;
+            private int maxCount = 6;
+            private boolean on = false;
+        
+            public void actionPerformed(ActionEvent e) {
+                if (count >= maxCount) {
+                    ((Timer) e.getSource()).stop();
+                } else {
+                    botão[resposta-1].setBackground( on ? Color.YELLOW : null);
+                    on = !on;
+                    count++;
+                }
+            }
+        });
+        blinkTimer.start();
     }
 }

@@ -83,6 +83,9 @@ public class Questoes
         }
     }
     
+    /**
+     * Devolve a resposta correcta. Vai de 1 a 4
+     */
     public int getRespostaCorrecta()
     {
         return respostasCorrectas.get(nivel-1).get(numeroDaPergunta);

@@ -34,6 +34,9 @@ public class OJogo
         return questoes.get().getResposta();
     }
     
+    /**
+     * Devolve a resposta correcta. Vai de 1 a 4
+     */
     public int getRespostaCorrecta()
     {
         return questoes.get().getRespostaCorrecta();

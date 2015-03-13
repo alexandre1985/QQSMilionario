@@ -24,6 +24,7 @@ comment2.params=
 comment2.target=java.lang.String[]\ getRespostas()
 comment3.params=
 comment3.target=int\ getRespostaCorrecta()
+comment3.text=\r\n\ Devolve\ a\ resposta\ correcta.\ Vai\ de\ 1\ a\ 4\r\n
 comment4.params=
 comment4.target=int\ getNivel()
 comment5.params=

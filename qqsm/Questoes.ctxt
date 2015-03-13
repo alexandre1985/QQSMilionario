@@ -15,6 +15,7 @@ comment5.target=void\ setRespostaCorrecta(int)
 comment5.text=\r\n\ Define\ qual\ \u00E9\ a\ resposta\ correcta\r\n\ @param\ numeroDaResposta\ \u00E9\ o\ n\u00FAmero\ da\ resposta\ correcta\ e\ vai\ desde\ 1\ at\u00E9\ 4\r\n
 comment6.params=
 comment6.target=int\ getRespostaCorrecta()
+comment6.text=\r\n\ Devolve\ a\ resposta\ correcta.\ Vai\ de\ 1\ a\ 4\r\n
 comment7.params=nivel
 comment7.target=int\ getSize(int)
 comment7.text=\r\n\ Retorna\ o\ numero\ de\ perguntas\ de\ um\ n\u00EDvel\r\n
