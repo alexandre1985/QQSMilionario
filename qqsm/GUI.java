@@ -6,6 +6,7 @@ import javax.swing.border.*;
 //import javax.swing.event.*;
 import java.util.Random;
 import java.util.concurrent.*;
+import java.net.URI;
 
 import org.jfree.chart.*;
 import org.jfree.chart.plot.*;
@@ -25,7 +26,7 @@ public class GUI extends JFrame
     private static final String VERSAO = "1.0";
     //Altura e largura da GUI Frame
     private static final int HEIGHT=200;
-    private static final int WIDTH=500;
+    private static final int WIDTH=520;
     OJogo dados;
     Premios premios;
     Random rand;
@@ -259,8 +260,30 @@ public class GUI extends JFrame
     
     private void sobre()
     {
-        JOptionPane.showMessageDialog(this, "Quem Quer Ser Milionário, versão " + VERSAO +
-        "\nAutor:\nDaniel Santos", "Sobre", JOptionPane.INFORMATION_MESSAGE);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel ,BoxLayout.PAGE_AXIS));
+        JLabel texto = new JLabel("<html>Quem Quer Ser Milionário, versão " + VERSAO +
+        "<br>Autor:<br></html>");
+        panel.add(texto);
+        
+        JLabel autor1 = new JLabel("<html>Daniel Santos <a href=\"\">dannysantos1985@gmail.com</a></html>");
+        autor1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panel.add(autor1);
+        sendMail(autor1);
+        JOptionPane.showMessageDialog(this, panel , "Sobre", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void sendMail(JLabel contact) {
+        contact.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().mail(new URI("mailto:dannysantos1985@gmail.com?subject=QQSMilionario"));
+                } catch (Exception ex) {
+                    //It looks like there's a problem
+                }
+            }
+        });
     }
     
     public static int getAltura()
@@ -461,10 +484,10 @@ public class GUI extends JFrame
     {
         int resposta = dados.getRespostaCorrecta();
         botão[resposta-1].setOpaque(true);
-        //botão[resposta-1].setBackground(Color.YELLOW);
+        botão[resposta-1].setBackground(Color.YELLOW);
         Timer blinkTimer = new Timer(500, new ActionListener() {
             private int count = 0;
-            private int maxCount = 6;
+            private int maxCount = 8;
             private boolean on = false;
         
             public void actionPerformed(ActionEvent e) {

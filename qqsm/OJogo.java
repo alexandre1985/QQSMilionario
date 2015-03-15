@@ -245,7 +245,7 @@ public class OJogo
         }
         Scanner s = null;
         try {
-            s = new Scanner(recordes);
+            s = new Scanner(recordes, "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
         }
