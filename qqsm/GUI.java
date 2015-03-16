@@ -265,25 +265,25 @@ public class GUI extends JFrame
         JLabel texto = new JLabel("<html>Quem Quer Ser Milionário, versão " + VERSAO +
         "<br>Autor:<br></html>");
         panel.add(texto);
-        
-        JLabel autor1 = new JLabel("<html>Daniel Santos <a href=\"\">dannysantos1985@gmail.com</a></html>");
-        autor1.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        panel.add(autor1);
-        sendMail(autor1);
+        panel.add(autorLabel("Daniel Santos", "dannysantos1985@gmail.com"));
         JOptionPane.showMessageDialog(this, panel , "Sobre", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    private void sendMail(JLabel contact) {
-        contact.addMouseListener(new MouseAdapter() {
+    private JLabel autorLabel(String nome, String email)
+    {
+        JLabel label = new JLabel("<html>" + nome + " &lt<a href=\"\">" + email + "</a>&gt</html>");
+        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    Desktop.getDesktop().mail(new URI("mailto:dannysantos1985@gmail.com?subject=QQSMilionario"));
+                    Desktop.getDesktop().mail(new URI("mailto:" + email + "?subject=QQSMilionario"));
                 } catch (Exception ex) {
                     //It looks like there's a problem
                 }
             }
         });
+        return label;
     }
     
     public static int getAltura()

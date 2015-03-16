@@ -96,7 +96,7 @@ public class OJogo
         downloadRecordes();
         Scanner s = null;
         try {
-            s = new Scanner(new File(ficRecordes));
+            s = new Scanner(new File(ficRecordes), "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -188,7 +188,7 @@ public class OJogo
         PrintWriter writer = null;
         String linha = null;
         try {
-            s = new Scanner(recordes);
+            s = new Scanner(recordes, "UTF-8");
             writer = new PrintWriter(recordesTMP, "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
