@@ -269,7 +269,7 @@ public class GUI extends JFrame
         JOptionPane.showMessageDialog(this, panel , "Sobre", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    private JLabel autorLabel(String nome, String email)
+    private JLabel autorLabel(String nome, final String email)
     {
         JLabel label = new JLabel("<html>" + nome + " &lt<a href=\"\">" + email + "</a>&gt</html>");
         label.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -431,12 +431,12 @@ public class GUI extends JFrame
         }
     }
     
-    private void dialogUploadWaiting(int nivel, String name)
+    private void dialogUploadWaiting(final int nivel, final String name)
     {
         JProgressBar progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
         JTextArea msgLabel;
-        JDialog dialogDeEspera;
+        final JDialog dialogDeEspera;
         JPanel panel;
 
         msgLabel = new JTextArea("A gravar o recorde no servidor...");
@@ -482,7 +482,7 @@ public class GUI extends JFrame
     
     private void efeitoRespostaErrada()
     {
-        int resposta = dados.getRespostaCorrecta();
+        final int resposta = dados.getRespostaCorrecta();
         botão[resposta-1].setOpaque(true);
         botão[resposta-1].setBackground(Color.YELLOW);
         Timer blinkTimer = new Timer(500, new ActionListener() {
