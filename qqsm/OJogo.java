@@ -3,6 +3,7 @@ import java.net.URL;
 import org.apache.commons.net.ftp.FTPClient;
 import java.io.*;
 import java.nio.file.*;
+import java.nio.channels.*;
 
 /**
  * Esta classe trata do nível e define todos métodos principais do jogo.
@@ -89,10 +90,6 @@ public class OJogo
     
     public boolean eRecorde()
     {
-        openFTPSession();
-        //se não houver internet
-        if(!client.isConnected())
-            return false;
         downloadRecordes();
         Scanner s = null;
         try {
@@ -138,11 +135,13 @@ public class OJogo
         }
     }
     
-    private void downloadRecordes()
+    public void downloadRecordes()
     {
         try {
+            URL url = new URL("http://alexandre1985.byethost7.com/" + ficRecordes);
+            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
             FileOutputStream fos = new FileOutputStream(ficRecordes);
-            client.retrieveFile(ficRecordes, fos);
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
