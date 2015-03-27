@@ -15,7 +15,7 @@ public class OJogo
     BancoDeDados questoes;
     int nivel=1;
     final String ficRecordes = "recordes.txt";
-    final String siteURL = "http://alexandre1985.byethost7.com/";
+    final String siteURL = "http://dacs.esy.es/";
     
     public OJogo()
     {
