@@ -1,6 +1,5 @@
 import java.util.*;
-import java.net.URL;
-import org.apache.commons.net.ftp.FTPClient;
+import java.net.*;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.channels.*;
@@ -15,14 +14,12 @@ public class OJogo
 {
     BancoDeDados questoes;
     int nivel=1;
-    final String ftpURL = "ftp.byethost7.com";
     final String ficRecordes = "recordes.txt";
-    FTPClient client;
+    final String siteURL = "http://alexandre1985.byethost7.com/";
     
     public OJogo()
     {
         questoes = new BancoDeDados();
-        client = new FTPClient();
     }
     
     public String getPergunta()
@@ -114,56 +111,115 @@ public class OJogo
         return false;
     }
     
-    private void openFTPSession()
-    {
-        try {
-            client.connect(ftpURL);
-            client.login("b7_15960406", "qqsmilionario");
-            client.changeWorkingDirectory("htdocs");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void closeFTPSession()
-    {
-        try {
-            client.logout();
-            client.disconnect();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
     public void downloadRecordes()
     {
+        FileOutputStream fos = null;
         try {
-            URL url = new URL("http://alexandre1985.byethost7.com/" + ficRecordes);
+            URL url = new URL(siteURL + ficRecordes);
             ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream(ficRecordes);
+            fos = new FileOutputStream(ficRecordes);
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            fos.close();
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void uploadRecordes()
-    {
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(ficRecordes);
-            // Store file to server
-            client.storeFile(ficRecordes, fis);
-        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (fis != null) {
-                    fis.close();
-                }
-            } catch (IOException e) {
+                fos.close();
+            } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+    }
+    
+    public void uploadRecordes()
+    {
+        final String CrLf = "\r\n";
+        URLConnection conn = null;
+        OutputStream os = null;
+        InputStream is = null;
+
+        try {
+            URL url = new URL(siteURL + "upload.php");
+            //System.out.println("url:" + url);
+            conn = url.openConnection();
+            conn.setDoOutput(true);
+
+            String postData = "";
+
+            InputStream imgIs = getClass().getResourceAsStream("/" + ficRecordes);
+            byte[] imgData = new byte[imgIs.available()];
+            imgIs.read(imgData);
+            imgIs.close();
+            
+            String message1 = "";
+            message1 += "-----------------------------4664151417711" + CrLf;
+            message1 += "Content-Disposition: form-data; name=\"uploadedfile\"; filename=\"" +
+            ficRecordes + "\"" + CrLf;
+            message1 += "Content-Type: text/txt" + CrLf;
+            message1 += CrLf;
+
+            // the image is sent between the messages in the multipart message.
+
+            String message2 = "";
+            message2 += CrLf + "-----------------------------4664151417711--"
+                    + CrLf;
+
+            conn.setRequestProperty("Content-Type",
+                    "multipart/form-data; boundary=---------------------------4664151417711");
+            // might not need to specify the content-length when sending chunked
+            // data.
+            conn.setRequestProperty("Content-Length", String.valueOf((message1
+                    .length() + message2.length() + imgData.length)));
+
+            //System.out.println("open os");
+            os = conn.getOutputStream();
+
+            //System.out.println(message1);
+            os.write(message1.getBytes());
+
+            // SEND THE IMAGE
+            int index = 0;
+            int size = 1024;
+            do {
+                //System.out.println("write:" + index);
+                if ((index + size) > imgData.length) {
+                    size = imgData.length - index;
+                }
+                os.write(imgData, index, size);
+                index += size;
+            } while (index < imgData.length);
+            //System.out.println("written:" + index);
+
+            //System.out.println(message2);
+            os.write(message2.getBytes());
+            os.flush();
+
+            //System.out.println("open is");
+            is = conn.getInputStream();
+
+            char buff = 512;
+            int len;
+            byte[] data = new byte[buff];
+            do {
+                //System.out.println("READ");
+                len = is.read(data);
+
+                if (len > 0) {
+                    //System.out.println(new String(data, 0, len));
+                }
+            } while (len > 0);
+
+            //System.out.println("DONE");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //System.out.println("Close connection");
+            try {
+                os.close();
+            } catch (Exception e) {
+            }
+            try {
+                is.close();
+            } catch (Exception e) {
             }
         }
     }
@@ -175,11 +231,7 @@ public class OJogo
     {
         final String recordesTMP = "recordes_tmp.txt";
         File recordes = new File(ficRecordes);
-        if(!client.isConnected())
-            openFTPSession();
-        //se não há internet
-        if(!client.isConnected())
-            return;
+
         if(!recordes.exists()) { //se o fic não existe, faz o download do fic
             downloadRecordes();
         }
@@ -220,17 +272,7 @@ public class OJogo
         }
         File tmp = new File(recordesTMP);
         tmp.renameTo(new File(ficRecordes));
-        if(!client.isConnected())
-            openFTPSession();
         uploadRecordes();
-        closeFTPSession();
-    }
-    
-    public void apagarRecordesServidor() throws Exception
-    {
-        openFTPSession();
-        client.deleteFile(ficRecordes);
-        closeFTPSession();
     }
     
     public String recordesString()
@@ -238,8 +280,6 @@ public class OJogo
         Premios premios = new Premios();
         File recordes = new File(ficRecordes);
         if(!recordes.exists()) { //se o fic não existe, faz o download do fic
-            if(!client.isConnected())
-                openFTPSession();
             downloadRecordes();
         }
         Scanner s = null;
