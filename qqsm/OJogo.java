@@ -145,7 +145,8 @@ public class OJogo
 
             String postData = "";
 
-            InputStream imgIs = getClass().getResourceAsStream("/" + ficRecordes);
+            //InputStream imgIs = getClass().getResourceAsStream("/" + ficRecordes);
+            FileInputStream imgIs = new FileInputStream(new File(ficRecordes));
             byte[] imgData = new byte[imgIs.available()];
             imgIs.read(imgData);
             imgIs.close();
@@ -154,7 +155,7 @@ public class OJogo
             message1 += "-----------------------------4664151417711" + CrLf;
             message1 += "Content-Disposition: form-data; name=\"uploadedfile\"; filename=\"" +
             ficRecordes + "\"" + CrLf;
-            message1 += "Content-Type: text/txt" + CrLf;
+            message1 += "Content-Type: text/plain" + CrLf;
             message1 += CrLf;
 
             // the image is sent between the messages in the multipart message.
