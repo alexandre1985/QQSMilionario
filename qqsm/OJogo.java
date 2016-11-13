@@ -1,6 +1,7 @@
 import java.util.*;
 import java.net.URL;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTP;
 import java.io.*;
 import java.nio.file.*;
 
@@ -14,8 +15,11 @@ public class OJogo
 {
     BancoDeDados questoes;
     int nivel=1;
-    final String ftpURL = "ftp.byethost7.com";
+    final String ftpURL = "ftp.comprasdamonica.hol.es";
     final String ficRecordes = "recordes.txt";
+    final String ftpUser = "u887331074.qqsm";
+    final String ftpPass = "qqsmpass";
+    //final String ftpDirectory = "public_html/qqsm/";
     FTPClient client;
     
     public OJogo()
@@ -121,8 +125,8 @@ public class OJogo
     {
         try {
             client.connect(ftpURL);
-            client.login("b7_15960406", "qqsmilionario");
-            client.changeWorkingDirectory("htdocs");
+            client.login(ftpUser, ftpPass);
+            //client.changeWorkingDirectory(ftpDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -140,9 +144,17 @@ public class OJogo
     
     private void downloadRecordes()
     {
+        boolean sucesso = false;
         try {
+            client.enterLocalPassiveMode();
+            client.setFileType(FTP.BINARY_FILE_TYPE);
+            
             FileOutputStream fos = new FileOutputStream(ficRecordes);
-            client.retrieveFile(ficRecordes, fos);
+            if(!client.isConnected()) { System.out.println("não está conectado"); }
+            sucesso = client.retrieveFile(ficRecordes, fos);
+            if(!sucesso) {
+                System.out.println("download ficheiro sem sucesso");
+            }
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -179,8 +191,10 @@ public class OJogo
         if(!client.isConnected())
             openFTPSession();
         //se não há internet
-        if(!client.isConnected())
+        if(!client.isConnected()) {
+            System.out.println("Não consegui conectar ao servidor");
             return;
+        }
         if(!recordes.exists()) { //se o fic não existe, faz o download do fic
             downloadRecordes();
         }
