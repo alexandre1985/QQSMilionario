@@ -26,6 +26,12 @@ public class OJogo
     {
         questoes = new BancoDeDados();
         client = new FTPClient();
+        client.enterLocalPassiveMode();
+        try {
+            client.setFileType(FTP.BINARY_FILE_TYPE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public String getPergunta()
@@ -146,9 +152,6 @@ public class OJogo
     {
         boolean sucesso = false;
         try {
-            client.enterLocalPassiveMode();
-            client.setFileType(FTP.BINARY_FILE_TYPE);
-            
             FileOutputStream fos = new FileOutputStream(ficRecordes);
             if(!client.isConnected()) { System.out.println("não está conectado"); }
             sucesso = client.retrieveFile(ficRecordes, fos);
